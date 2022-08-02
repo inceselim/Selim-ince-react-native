@@ -1,12 +1,15 @@
+//
+//Navigation
+//
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //
 //Pages
-import HomePage from "../pages/HomePage";
-import DetailPage from "../pages/DetailPage";
-import CreatePage from "../pages/CreatePage";
+import HomeScreen from "../pages/HomeScreen";
+import DetailScreen from "../pages/DetailScreen";
+import CreateScreen from "../pages/CreateScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,11 +21,11 @@ const Nav = () => {
                 screenOptions={{
                     headerShown: false,
                 }}>
-                <Stack.Screen name="Home" component={HomePage}
+                <Stack.Screen name="Home" component={HomeScreen}
                     options={{ headerShown: false, title: "Home" }} />
-                <Stack.Screen name="Detail" component={DetailPage}
+                <Stack.Screen name="Detail" component={DetailScreen}
                     options={{ headerShown: false, title: "Detail" }} />
-                <Stack.Screen name="Create" component={CreatePage}
+                <Stack.Screen name="Create" component={CreateScreen}
                     options={{ headerShown: false, title: "Detail" }} />
             </Stack.Navigator>
         </NavigationContainer>
