@@ -7,14 +7,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //
 //Pages
-import HomeScreen from "../pages/HomeScreen";
-import DetailScreen from "../pages/DetailScreen";
-import CreateScreen from "../pages/CreateScreen";
+import HomeScreen from "../screens/HomeScreen";
+import DetailScreen from "../screens/DetailScreen";
+import CreateScreen from "../screens/CreateScreen";
 
 const Stack = createNativeStackNavigator();
 
 
-const Nav = () => {
+export const StackNav = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Home"
@@ -31,5 +31,3 @@ const Nav = () => {
         </NavigationContainer>
     );
 }
-
-export { Nav };

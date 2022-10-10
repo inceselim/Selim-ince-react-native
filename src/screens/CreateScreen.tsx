@@ -3,6 +3,9 @@ import { View, Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } fro
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { useNavigation } from '@react-navigation/native';
+import ButtonCard from '../components/buttonCard/ButtonCard';
+import { useAppDispatch } from '../redux/store';
+import { fetchProductsData,postProductsData } from '../redux/features/productSlice';
 
 export default function CreateScreen(props: any) {
     const navigation: any = useNavigation();
@@ -13,26 +16,13 @@ export default function CreateScreen(props: any) {
     // Selected Category Data
     const [isCategory, setCategory] = useState()
 
+    const dispatch = useAppDispatch();
     //
     //Form data
     const [title, onChangeTitle] = useState<string>("");
     const [price, onChangePrice] = useState<number | any>(0);
     const [description, onChangeDescription] = useState<string>("");
     const [imgLink, onChangeImgLink] = useState<string>("");
-
-    //
-    //Api Token
-    const token: any = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluY2VzZWxpbTkxQGhvdG1haWwuY29tIiwiZ2l0aHViIjoiaHR0cHM6Ly9naXRodWIuY29tL2luY2VzZWxpbSIsImlhdCI6MTY1OTI3MTM3NCwiZXhwIjoxNjU5NzAzMzc0fQ.jlGfqxViwfsxb6qnOzfm1_Q5ulwa1GYjuDdvZWKQhII"
-
-    //
-    //Post config
-    //
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    };
 
     //
     //Post data template
@@ -50,31 +40,21 @@ export default function CreateScreen(props: any) {
     //Post Request
     //
     const handleClick = () => {
-        axios.post('https://upayments-studycase-api.herokuapp.com/api/products/',
-            postData,
-            config
-        )
-            .then(function (response) {
-                console.log(response.status)
-                console.log(response.config)
-                console.log(response.headers)
-                console.log(response.data.data);
-                console.log(response.data.headers['Content-Type']);
-            })
-            .then(navigation.navigate("Home"));
+        dispatch(postProductsData(postData))
+        navigation.navigate("Home")
     };
 
     return (
         <SafeAreaView>
             <TextInput
-                style={stylesInput.input}
+                style={styles.input}
                 placeholder="Product title"
                 keyboardType='default'
                 onChangeText={onChangeTitle}
                 value={title}
             />
             <TextInput
-                style={stylesInput.input}
+                style={styles.input}
                 keyboardType="numeric"
                 placeholder="Price"
                 onChangeText={onChangePrice}
@@ -91,40 +71,24 @@ export default function CreateScreen(props: any) {
                 value={description}
             />
             <TextInput
-                style={stylesInput.input}
+                style={styles.input}
                 placeholder="Image link"
                 keyboardType='default'
                 onChangeText={onChangeImgLink}
                 value={imgLink}
             />
-            <Text style={{ paddingLeft: 10, }}>Select Category: {isCategory}</Text>
-            <View style={{
-                paddingLeft: 3,
-                paddingRight: 12,
-                marginTop: 10,
-                margin: 7,
-                flexDirection: "row",
-                justifyContent: "space-between",
-            }}>
+            <View style={styles.containerCategory}>
                 {categoryData.map(i =>
-                    <TouchableOpacity onPress={() => setCategory(i.name)}>
+                    <TouchableOpacity key={i._id} onPress={() => setCategory(i.name)}>
                         <Text style={isCategory == i.name ? { backgroundColor: "#224", color: "#fff" } : null}>{i.name}</Text>
                     </TouchableOpacity>
                 )}
             </View>
-            <TouchableOpacity onPress={handleClick} style={styles.btn}>
-                <Text style={styles.btnText}>Add Product</Text>
+            <TouchableOpacity onPress={handleClick}>
+                <Text>
+                "Add Product"
+                </Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
 }
-
-const stylesInput = StyleSheet.create({
-    input: {
-        height: 40,
-        margin: 12,
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 10,
-    },
-});
