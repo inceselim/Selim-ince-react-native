@@ -4,25 +4,49 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
-    containerCategory: {
-        paddingLeft: 3,
-        paddingRight: 3,
-        marginTop: 10,
-        margin: 7,
-        flexDirection: "row",
-        justifyContent: "space-between",
+    container: {
         flex: 1,
     },
-    container: {
-        flex: 9,
+    containerCategory: {
+        paddingLeft: 4,
+        paddingRight: 4,
+        marginTop: 5,
+        flex: 0.1,
+        minHeight: 30,
+        maxHeight:30,
+    },
+    containerContent: {
+        flex: 13,
+    },
+    btn: {
+        backgroundColor: "#114",
+        margin: 3,
+        borderRadius: 20, 
+        marginLeft: 5,
+        marginRight: 5,
+        height: 30
+    },
+    btnText: {
+        fontSize: 16,
+        textAlign: "center",
+        color: "#fff",
+        padding: 5
     },
     buttonActive: {
         backgroundColor: "#113",
         color: "#ffaf",
+        padding: 2,
+        paddingLeft: 7,
+        paddingRight: 7,
+        fontSize: 15,
     },
     buttonDeactive: {
-        backgroundColor: "#cdcd",
+        backgroundColor: "#dd5",
         color: "#003",
+        padding: 2,
+        paddingLeft: 7,
+        paddingRight: 7,
+        fontSize: 15,
     },
     imageDetail: {
         height: (windowHeight / 2),
@@ -37,12 +61,12 @@ export const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     headerText: {
-        fontSize: 22,
+        fontSize: 17,
         fontWeight: "bold",
         paddingRight: 10,
     },
-    priceText: { fontSize: 18 },
-    detailText: { fontSize: 17, margin: 3, padding: 10 },
+    priceText: { fontSize: 15 },
+    detailText: { fontSize: 15, margin: 3, padding: 10 },
     input: {
         height: 40,
         margin: 12,

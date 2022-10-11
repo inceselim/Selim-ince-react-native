@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { useNavigation } from '@react-navigation/native';
-import ButtonCard from '../components/buttonCard/ButtonCard';
 import { useAppDispatch } from '../redux/store';
-import { fetchProductsData,postProductsData } from '../redux/features/productSlice';
 
 export default function CreateScreen(props: any) {
     const navigation: any = useNavigation();
@@ -32,18 +30,41 @@ export default function CreateScreen(props: any) {
         price: price,
         description: description,
         avatar: "https://images.unsplash.com/photo-1577344224573-f9280c105a85?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-        category: "Hobby",
-        developerEmail: "inceselim91@hotmail.com"
+        category: isCategory,
+        developerEmail: "inceselim91@gmail.com"
     })
 
+    //
+    //Api Token
+    const token: any = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluY2VzZWxpbTkxQGdtYWlsLmNvbSIsImdpdGh1YiI6Imh0dHBzOi8vZ2l0aHViLmNvbS9pbmNlc2VsaW0iLCJpYXQiOjE2NjUzMzMwMzIsImV4cCI6MTY2NTc2NTAzMn0.1bMrRfs2CKsYdneY41HChRbBuSryXfgCpLoQ16cr8Lc"
+
+    //
+    //Post config
+    //
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            'Content-Type': "application/json"
+        }
+    };
     //
     //Post Request
     //
     const handleClick = () => {
-        dispatch(postProductsData(postData))
-        navigation.navigate("Home")
+        console.log("COMPLETED")
+        axios.post('https://upayments-studycase-api.herokuapp.com/api/products',
+            postData,
+            config
+        )
+            .then(function (response) {
+                console.log(response.status)
+                console.log(response.config)
+                console.log(response.headers)
+                console.log(response.data.data);
+                console.log(response.data);
+            })
+            .then(navigation.navigate("Home"))
     };
-
     return (
         <SafeAreaView>
             <TextInput
@@ -77,17 +98,17 @@ export default function CreateScreen(props: any) {
                 onChangeText={onChangeImgLink}
                 value={imgLink}
             />
-            <View style={styles.containerCategory}>
-                {categoryData.map(i =>
+            <ScrollView horizontal style={styles.containerCategory}>
+                {cat.map(i =>
                     <TouchableOpacity key={i._id} onPress={() => setCategory(i.name)}>
-                        <Text style={isCategory == i.name ? { backgroundColor: "#224", color: "#fff" } : null}>{i.name}</Text>
+                        <Text style={isCategory == i.name ? styles.buttonActive : styles.buttonDeactive}>
+                            {i.name}
+                        </Text>
                     </TouchableOpacity>
                 )}
-            </View>
-            <TouchableOpacity onPress={handleClick}>
-                <Text>
-                "Add Product"
-                </Text>
+            </ScrollView>
+            <TouchableOpacity onPress={handleClick} style={styles.btn}>
+                <Text style={styles.btnText}>Add Product</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

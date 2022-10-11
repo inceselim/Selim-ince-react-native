@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     text: {
-        color: "#011",
+        color: "#000",
         backgroundColor: "#FF8A65",
         height: 54,
         marginTop:1,

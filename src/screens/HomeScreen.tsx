@@ -3,14 +3,13 @@ import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, FlatList
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../styles/styles';
 import ButtonCard from '../components/buttonCard/ButtonCard';
+import ProductCard from '../components/productCard.tsx/ProductCard';
 
 //
 //import Redux
 import { fetchCategoriesData } from '../redux/features/categoriesSlice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { fetchProductsData } from '../redux/features/productSlice';
-import ProductCard from '../components/productCard.tsx/ProductCard';
-import CategoryCard from '../components/categoryCard/CategoryCard';
 
 export default function HomeScreen() {
     const navigation = useNavigation();
@@ -30,36 +29,44 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <FlatList
-                data={product?.data} numColumns={2}
-                ListHeaderComponent={
-                    <View style={styles.containerCategory} >
-                        <TouchableOpacity onPress={() => setCategory("All")}>
-                            <Text style={isCategory == "All" ? styles.buttonActive : styles.buttonDeactive}>All</Text>
+            <ScrollView horizontal style={styles.containerCategory}>
+                <TouchableOpacity onPress={() => setCategory("All")}>
+                    <Text style={isCategory == "All" ? styles.buttonActive : styles.buttonDeactive}>
+                        All
+                    </Text>
+                </TouchableOpacity>
+                {category.data?.map(function (item: any) {
+                    return (
+                        <TouchableOpacity key={item._id} onPress={() => setCategory(item.name)}>
+                            <Text style={isCategory == item.name ? styles.buttonActive : styles.buttonDeactive}>
+                                {item.name}
+                            </Text>
                         </TouchableOpacity>
-                        <FlatList data={category?.data} horizontal
-                            renderItem={({ item,index }) => {
-                                return (
-                                    <CategoryCard key={index+item._id} name={item.name} isCategory={isCategory} handlePress={() => setCategory(item.name)} />
-                                )
-                            }} />
-                    </View>
-                }
-                ListFooterComponent={<ButtonCard categories={category.data} nav={"Create"} text={"Add Product"} />}
-                renderItem={({ item, index }) => (
-                    isCategory !== "All" ?
-                        isCategory == item.category ?
-                            <ProductCard key={index+item._id} img={item.avatar}
+                    )
+                })}
+            </ScrollView>
+            <View style={styles.containerContent}>
+                <FlatList
+                    data={product?.data} numColumns={2}
+                    ListFooterComponent=
+                    {
+                        <ButtonCard categories={category.data} nav={"Create"} text={"Add Product"} />
+                    }
+                    renderItem={({ item, index }) => (
+                        isCategory !== "All" ?
+                            isCategory == item.category ?
+                                <ProductCard key={index} img={item.avatar}
+                                    name={item.name} price={item.price} description={item.description}
+                                />
+                                : null
+                            : <ProductCard key={index} img={item.avatar}
                                 name={item.name} price={item.price} description={item.description}
                             />
-                            : null
-                        : <ProductCard key={index+item._id} img={item.avatar}
-                            name={item.name} price={item.price} description={item.description}
-                        />
 
-                )}
-                keyExtractor={item => item.id}
-            />
+                    )}
+                    keyExtractor={item => item.id}
+                />
+            </View>
         </SafeAreaView >
     );
 }

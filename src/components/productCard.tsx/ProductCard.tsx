@@ -17,10 +17,10 @@ export default function ProductCard(props: any) {
             <TouchableOpacity onPress={
                 () => navigation.navigate("Detail",
                     {
-                        img: !img,
-                        name: !name,
-                        price: !price,
-                        description: !description
+                        img: img,
+                        name: name,
+                        price: price,
+                        description: description
                     })}>
                 <Image style={styles.image} source={{ uri: img }} />
                 <Text style={styles.text}>{name}</Text>
